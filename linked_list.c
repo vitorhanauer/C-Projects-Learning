@@ -13,8 +13,9 @@ typedef struct LinkedList{
 } LinkedList;
 
 void insertInto(LinkedList *list, Node *node, int position);
+void removeFrom(LinkedList *list, int position);
 Node *createNode(int value);
-Node get(LinkedList *list, int position);
+Node *get(LinkedList *list, int position);
 
 void main(){
     LinkedList list;
@@ -27,8 +28,11 @@ void main(){
     insertInto(&list, node2, 1);
     insertInto(&list, node3, 2);
     insertInto(&list, node4, 3);
-    Node temp = get(&list, 2);
-    printf("%d\n", temp.value);
+    removeFrom(&list, 0);
+    removeFrom(&list, 1);
+    removeFrom(&list, 2);
+    Node *temp = get(&list, 3);
+    printf("%d\n", temp->value);
 
     return;
 }
@@ -75,16 +79,38 @@ void insertInto(LinkedList *list, Node *node, int position){
     
 }
 
-Node get(LinkedList *list, int position){
-    if(position >= list->total) return *(list->last);
-    if(position <= 0) return *(list->first);
+void removeFrom(LinkedList *list, int position){
+    Node *temp;
+    
+    if(position <= 0){
+        temp = list->first;
+        list->first = temp->next;
+        free(temp);
+        list->total--;
+        return;
+    }
+
+    Node *node = get(list, position - 1);
+    temp = node->next;
+    node->next = temp->next;
+    list->total--;
+    if(position >= list->total){
+        list->last = node;
+        list->last->next = NULL;
+    }
+    free(temp);
+}
+
+Node *get(LinkedList *list, int position){
+    if(position >= list->total) return list->last;
+    if(position <= 0) return list->first;
     
     Node *temp = list->first;
     for (int i = 0; i != position; i++)
     {
         temp = temp->next;
     }
-    return *temp;
+    return temp;
 }
 
 Node *createNode(int value){
