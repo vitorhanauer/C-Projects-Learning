@@ -12,7 +12,7 @@ typedef struct LinkedList{
 } LinkedList;
 
 void insertInto(LinkedList *list, Node *node, int position);
-
+Node get(LinkedList *list, int position);
 
 void main(){
     LinkedList list;
@@ -22,16 +22,11 @@ void main(){
     Node node4 = {.value = 40, .next = NULL};
 
     insertInto(&list, &node1, 0);
-    printf("%d\n", list.first->value);
-
     insertInto(&list, &node2, 1);
-    printf("%d\n", list.last->value);
-
-    insertInto(&list, &node3, 0);
-    printf("%d\n", list.first->value);
-
-    insertInto(&list, &node4, 1);
-    printf("%d\n", list.first->next->value);
+    insertInto(&list, &node3, 2);
+    insertInto(&list, &node4, 3);
+    Node temp = get(&list, -1);
+    printf("%d\n", temp.value);
 
     return;
 }
@@ -76,4 +71,16 @@ void insertInto(LinkedList *list, Node *node, int position){
         return;
     }
     
+}
+
+Node get(LinkedList *list, int position){
+    if(position >= list->total) return *(list->last);
+    if(position <= 0) return *(list->first);
+    
+    Node *temp = list->first;
+    for (int i = 0; i != position; i++)
+    {
+        temp = temp->next;
+    }
+    return *temp;
 }
