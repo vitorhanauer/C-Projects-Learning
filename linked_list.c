@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct Node{
     int value;
@@ -12,20 +13,21 @@ typedef struct LinkedList{
 } LinkedList;
 
 void insertInto(LinkedList *list, Node *node, int position);
+Node *createNode(int value);
 Node get(LinkedList *list, int position);
 
 void main(){
     LinkedList list;
-    Node node1 = {.value = 10, .next = NULL};
-    Node node2 = {.value = 20, .next = NULL};
-    Node node3 = {.value = 30, .next = NULL};
-    Node node4 = {.value = 40, .next = NULL};
+    Node *node1 = createNode(10);
+    Node *node2 = createNode(20);
+    Node *node3 = createNode(30);
+    Node *node4 = createNode(40);
 
-    insertInto(&list, &node1, 0);
-    insertInto(&list, &node2, 1);
-    insertInto(&list, &node3, 2);
-    insertInto(&list, &node4, 3);
-    Node temp = get(&list, -1);
+    insertInto(&list, node1, 0);
+    insertInto(&list, node2, 1);
+    insertInto(&list, node3, 2);
+    insertInto(&list, node4, 3);
+    Node temp = get(&list, 2);
     printf("%d\n", temp.value);
 
     return;
@@ -83,4 +85,11 @@ Node get(LinkedList *list, int position){
         temp = temp->next;
     }
     return *temp;
+}
+
+Node *createNode(int value){
+    Node *node = malloc(sizeof(Node));
+    node->value = value;
+    node->next = NULL;
+    return node;
 }
